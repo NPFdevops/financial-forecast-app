@@ -1,0 +1,57 @@
+.scenario-selector {
+  margin-top: 1.5rem;
+}
+
+.scenario-selector h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.scenario-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.scenario-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 200px;
+  text-align: left;
+}
+
+.scenario-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.scenario-button.active {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: white;
+  color: #667eea;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.scenario-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.scenario-description {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.scenario-button.active .scenario-description {
+  opacity: 0.7;
+}

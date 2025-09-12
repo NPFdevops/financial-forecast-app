@@ -1,70 +1,110 @@
-# Getting Started with Create React App
+# Financial Forecast Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React application for visualizing financial projections with interactive scenario planning.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **🎯 Executive Summary**: High-level overview of key financial metrics with clear scenario indication
+- **⚙️ Admin Panel**: Edit financial assumptions and scenario multipliers with live updates
+- **📊 Interactive Charts**: Visual analysis of revenue growth, EBITDA progression, and financial trends
+- **🔄 Dynamic Scenario Selection**: Switch between Base, Upside, and Downside scenarios with real-time updates
+- **💰 Comprehensive Financial Modeling**: Full P&L statements, cash flow, and runway calculations
+- **📈 Visual Analytics**: Professional charts showing revenue breakdown and financial progression
+- **✏️ Editable Parameters**: Modify base assumptions and multipliers through the admin interface
+- **🎨 Professional Interface**: Modern, gradient-based design with intuitive navigation
 
-### `npm start`
+## Scenarios
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Base Scenario (Conservative Baseline)
+- Traffic multiplier: 100%
+- B2B clients: 100%
+- Marketing spend: 100%
+- All other metrics at baseline levels
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Upside Scenario (Optimistic Growth)
+- Traffic multiplier: 120%
+- B2B clients: 125%
+- B2C ARPU: 110%
+- Improved conversion rates across metrics
 
-### `npm test`
+### Downside Scenario (Conservative Downside)
+- Traffic multiplier: 80%
+- B2B clients: 75%
+- Higher hosting costs: 110%
+- Reduced conversion rates
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Key Metrics Tracked
 
-### `npm run build`
+### Revenue
+- B2C Revenue (subscription-based)
+- B2B/API Revenue (tiered pricing)
+- Total Revenue
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Costs
+- Hosting costs (COGS)
+- Salaries by function
+- Marketing spend
+- General & Administrative expenses
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Key Financial Metrics
+- Gross Margin
+- EBITDA
+- Cash Flow
+- Runway calculations
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Data Structure
 
-### `npm run eject`
+The application uses a comprehensive financial model with:
+- Multi-year projections (2026-2028)
+- Detailed assumptions for user acquisition and retention
+- B2B tiered pricing structure (Free, Tier C, Tier B, Tier A, Tier A+)
+- Headcount planning by function
+- Cash flow modeling with planned funding rounds
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Basic Navigation
+1. **Executive Summary**: View key financial outputs at the top with clear scenario indication
+2. **Select Scenario**: Use the scenario buttons in the header to switch between Base, Upside, and Downside projections
+3. **Review Assumptions**: The assumptions table shows how each scenario affects key multipliers
+4. **Analyze Charts**: Interactive charts show revenue growth, EBITDA trends, and financial comparisons
+5. **Detailed P&L**: Comprehensive profit & loss statements with scenario-based calculations
+6. **Cash Flow Analysis**: Track cash runway and funding needs based on EBITDA projections
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Admin Features
+7. **Edit Model**: Click the "⚙️ Edit Model" button in the header to access the admin panel
+8. **Modify Assumptions**: Update base traffic, conversion rates, pricing, and cost assumptions
+9. **Adjust Multipliers**: Fine-tune scenario multipliers for traffic, clients, costs, etc.
+10. **Live Updates**: All changes are reflected immediately across all components
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Technical Details
 
-## Learn More
+- Built with React 18
+- Responsive design with CSS Grid/Flexbox
+- Real-time calculations based on scenario selection
+- Professional financial data formatting
+- Color-coded metrics (green for positive, red for negative)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Getting Started
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```
 
-### Code Splitting
+Opens the app at [http://localhost:3000](http://localhost:3000)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run build
+```
 
-### Analyzing the Bundle Size
+Builds the app for production deployment.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Financial Model Accuracy
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The financial model includes:
+- ✅ Proper revenue calculations (B2C ARPU × users × 12 months)
+- ✅ B2B tiered pricing structure
+- ✅ Cost scaling with business metrics
+- ✅ Cash flow projections with funding rounds
+- ✅ Runway calculations based on burn rate
+- ✅ Scenario impact on all key drivers
