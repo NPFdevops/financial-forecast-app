@@ -23,7 +23,8 @@ const AssumptionsTable = ({ selectedScenario, multipliers }) => {
 
   return (
     <div className="assumptions-table">
-      <table>
+      <div className="table-container">
+        <table className="table">
         <thead>
           <tr>
             <th>Scenarios</th>
@@ -51,7 +52,8 @@ const AssumptionsTable = ({ selectedScenario, multipliers }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 };

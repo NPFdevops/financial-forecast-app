@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
 
 const AdminPanel = ({ 
@@ -7,18 +7,41 @@ const AdminPanel = ({
   baseAssumptions, 
   onUpdateAssumptions,
   scenarioMultipliers,
-  onUpdateMultipliers 
+  onUpdateMultipliers,
+  onResetToDefaults 
 }) => {
   const [activeTab, setActiveTab] = useState('assumptions');
   const [editedAssumptions, setEditedAssumptions] = useState(baseAssumptions);
   const [editedMultipliers, setEditedMultipliers] = useState(scenarioMultipliers);
 
+  // Update local state when props change (when data is loaded from localStorage)
+  useEffect(() => {
+    setEditedAssumptions(baseAssumptions);
+    setEditedMultipliers(scenarioMultipliers);
+  }, [baseAssumptions, scenarioMultipliers]);
+
   const handleAssumptionChange = (category, key, year, value) => {
     const newAssumptions = { ...editedAssumptions };
     if (year) {
-      newAssumptions[category][key][year] = parseFloat(value) || 0;
+      if (key) {
+        // For nested structures like costs.marketingSpend
+        if (!newAssumptions[category][key]) {
+          newAssumptions[category][key] = {};
+        }
+        newAssumptions[category][key][year] = parseFloat(value) || 0;
+      } else {
+        // For direct year-based structures like trafficSessions
+        if (!newAssumptions[category]) {
+          newAssumptions[category] = {};
+        }
+        newAssumptions[category][year] = parseFloat(value) || 0;
+      }
     } else {
-      newAssumptions[category][key] = parseFloat(value) || 0;
+      if (key) {
+        newAssumptions[category][key] = parseFloat(value) || 0;
+      } else {
+        newAssumptions[category] = parseFloat(value) || 0;
+      }
     }
     setEditedAssumptions(newAssumptions);
   };
@@ -36,8 +59,15 @@ const AdminPanel = ({
   };
 
   const handleReset = () => {
+    // Reset to current saved values (from localStorage or props)
     setEditedAssumptions(baseAssumptions);
     setEditedMultipliers(scenarioMultipliers);
+  };
+
+  const handleResetToOriginalDefaults = () => {
+    if (window.confirm('This will reset ALL data to the original default values and cannot be undone. Are you sure?')) {
+      onResetToDefaults();
+    }
   };
 
   if (!isOpen) return null;
@@ -46,7 +76,16 @@ const AdminPanel = ({
     <div className="admin-overlay">
       <div className="admin-panel">
         <div className="admin-header">
-          <h2>Financial Model Admin Panel</h2>
+          <div className="header-title">
+            <h2>Financial Model Admin Panel</h2>
+            <div className="data-status">
+              {localStorage.getItem('financialForecastAssumptions') ? (
+                <span className="status-indicator custom">📄 Custom Data Active</span>
+              ) : (
+                <span className="status-indicator default">🏭 Factory Defaults</span>
+              )}
+            </div>
+          </div>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
 
@@ -70,7 +109,7 @@ const AdminPanel = ({
             <div className="assumptions-editor">
               <h3>Market & Traffic Assumptions</h3>
               <div className="assumption-group">
-                <label>Traffic Sessions by Year:</label>
+                <label>Global NFT market volume ($/year):</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -84,7 +123,7 @@ const AdminPanel = ({
               </div>
 
               <div className="assumption-group">
-                <label>Wallet Connection Rate:</label>
+                <label>Market Share Acquired:</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -101,7 +140,7 @@ const AdminPanel = ({
               </div>
 
               <div className="assumption-group">
-                <label>Paid Conversion Rate:</label>
+                <label>Average Fee:</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -159,6 +198,117 @@ const AdminPanel = ({
                   </div>
                 ))}
               </div>
+
+              <div className="assumption-group">
+                <label>General & Administrative ($/month):</label>
+                {[2026, 2027, 2028].map(year => (
+                  <div key={year} className="year-input">
+                    <span>{year}:</span>
+                    <input
+                      type="number"
+                      value={editedAssumptions.costs.gaFixed[year]}
+                      onChange={(e) => handleAssumptionChange('costs', 'gaFixed', year, e.target.value)}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <h3>B2B/API Client Assumptions</h3>
+              {Object.keys(editedAssumptions.b2bClients).map(tier => {
+                const tierLabels = {
+                  tierD: 'Tier D (Free)',
+                  tierC: 'Tier C (Basic)', 
+                  tierB: 'Tier B (Pro)',
+                  tierA: 'Tier A (Enterprise)',
+                  tierAPlus: 'Tier A+ (Premium)'
+                };
+                return (
+                  <div key={tier} className="b2b-tier-group">
+                    <h4>{tierLabels[tier]}</h4>
+                    <div className="tier-inputs">
+                      <div className="tier-section">
+                        <label>Client Count:</label>
+                        <div className="year-inputs-row">
+                          {[2026, 2027, 2028].map(year => (
+                            <div key={year} className="year-input-inline">
+                              <span>{year}:</span>
+                              <input
+                                type="number"
+                                value={editedAssumptions.b2bClients[tier][year]}
+                                onChange={(e) => handleAssumptionChange('b2bClients', tier, year, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="tier-section">
+                        <label>Monthly Price ($):</label>
+                        <div className="year-inputs-row">
+                          {[2026, 2027, 2028].map(year => (
+                            <div key={year} className="year-input-inline">
+                              <span>{year}:</span>
+                              <input
+                                type="number"
+                                value={editedAssumptions.b2bPricing[tier][year]}
+                                onChange={(e) => handleAssumptionChange('b2bPricing', tier, year, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              <h3>Headcount by Department</h3>
+              {Object.keys(editedAssumptions.headcount).map(role => {
+                const roleLabels = {
+                  engineering: 'Engineering',
+                  dataML: 'Data & ML',
+                  productDesign: 'Product & Design', 
+                  sales: 'Sales',
+                  marketing: 'Marketing',
+                  opsFinance: 'Operations & Finance'
+                };
+                return (
+                  <div key={role} className="headcount-group">
+                    <h4>{roleLabels[role]}</h4>
+                    <div className="headcount-inputs">
+                      <div className="headcount-section">
+                        <label>Headcount (FTE):</label>
+                        <div className="year-inputs-row">
+                          {[2026, 2027, 2028].map(year => (
+                            <div key={year} className="year-input-inline">
+                              <span>{year}:</span>
+                              <input
+                                type="number"
+                                value={editedAssumptions.headcount[role][year]}
+                                onChange={(e) => handleAssumptionChange('headcount', role, year, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="headcount-section">
+                        <label>Monthly Salary ($):</label>
+                        <div className="year-inputs-row">
+                          {[2026, 2027, 2028].map(year => (
+                            <div key={year} className="year-input-inline">
+                              <span>{year}:</span>
+                              <input
+                                type="number"
+                                value={editedAssumptions.salariesMonthly[role][year]}
+                                onChange={(e) => handleAssumptionChange('salariesMonthly', role, year, e.target.value)}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
@@ -215,10 +365,17 @@ const AdminPanel = ({
         </div>
 
         <div className="admin-actions">
-          <button className="reset-btn" onClick={handleReset}>Reset to Default</button>
+          <div className="left-actions">
+            <button className="reset-original-btn" onClick={handleResetToOriginalDefaults}>
+              🔄 Reset to Factory Defaults
+            </button>
+            <button className="reset-btn" onClick={handleReset}>
+              ↶ Reset Current Changes
+            </button>
+          </div>
           <div className="action-group">
             <button className="cancel-btn" onClick={onClose}>Cancel</button>
-            <button className="save-btn" onClick={handleSave}>Save Changes</button>
+            <button className="save-btn" onClick={handleSave}>💾 Save & Persist</button>
           </div>
         </div>
       </div>

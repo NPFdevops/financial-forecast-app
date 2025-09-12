@@ -1,0 +1,99 @@
+.b2b-assumptions-table {
+  background: #000;
+  border: 6px solid #ff1493;
+  padding: 24px;
+  box-shadow: 8px 8px 0px #fff;
+  margin-bottom: 24px;
+}
+
+.b2b-assumptions-table h3 {
+  margin: 0 0 20px 0;
+  color: #ff1493;
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0px #fff;
+}
+
+.b2b-assumptions-table .table-container {
+  overflow-x: auto;
+}
+
+.b2b-assumptions-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: #fff;
+  border: 4px solid #ff1493;
+}
+
+.b2b-assumptions-table th {
+  background: #ff1493;
+  color: #000;
+  font-weight: 900;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #000;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.b2b-assumptions-table td {
+  padding: 12px;
+  border-bottom: 2px solid #ff1493;
+  vertical-align: top;
+  color: #000;
+  font-weight: bold;
+}
+
+.b2b-assumptions-table .tier-label {
+  font-weight: 500;
+  color: #2d3748;
+  min-width: 150px;
+}
+
+.b2b-assumptions-table .price-cell {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.b2b-assumptions-table .price-evolution {
+  margin-top: 4px;
+}
+
+.b2b-assumptions-table .price-evolution small {
+  color: #718096;
+  font-size: 0.8rem;
+}
+
+.b2b-assumptions-table tbody tr:hover {
+  background-color: #f7fafc;
+}
+
+.b2b-assumptions-table .table-note {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f0f4f8;
+  border-radius: 8px;
+}
+
+.b2b-assumptions-table .table-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .b2b-assumptions-table {
+    padding: 16px;
+  }
+  
+  .b2b-assumptions-table th,
+  .b2b-assumptions-table td {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+}

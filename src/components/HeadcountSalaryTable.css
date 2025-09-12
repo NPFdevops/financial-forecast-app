@@ -1,0 +1,175 @@
+.headcount-salary-table {
+  background: #000;
+  border: 6px solid #ff1493;
+  padding: 24px;
+  box-shadow: 8px 8px 0px #fff;
+  margin-bottom: 24px;
+}
+
+.headcount-salary-table h3 {
+  margin: 0 0 20px 0;
+  color: #ff1493;
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0px #fff;
+}
+
+.headcount-salary-table .table-container {
+  overflow-x: auto;
+}
+
+.headcount-salary-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.headcount-salary-table th {
+  background: #f7fafc;
+  color: #4a5568;
+  font-weight: 600;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.headcount-salary-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+.headcount-salary-table .role-label {
+  font-weight: 500;
+  color: #2d3748;
+  min-width: 150px;
+}
+
+.headcount-salary-table .headcount-cell {
+  text-align: center;
+  font-weight: 500;
+  color: #2d3748;
+  min-width: 80px;
+}
+
+.headcount-salary-table .salary-cell {
+  text-align: right;
+  font-weight: 500;
+  color: #2d3748;
+  white-space: nowrap;
+}
+
+.headcount-salary-table .annual-cost-cell {
+  text-align: right;
+  font-weight: 600;
+  color: #d53f8c;
+  white-space: nowrap;
+}
+
+.headcount-salary-table tbody tr:hover {
+  background-color: #f7fafc;
+}
+
+.headcount-salary-table .headcount-summary {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.headcount-salary-table .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.headcount-salary-table .year-summary {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.headcount-salary-table .year-summary h4 {
+  margin: 0 0 12px 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.headcount-salary-table .summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.headcount-salary-table .summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.headcount-salary-table .summary-label {
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.headcount-salary-table .summary-value {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.headcount-salary-table .summary-value.annual-highlight {
+  color: #d53f8c;
+  font-size: 1.05rem;
+}
+
+.headcount-salary-table .table-note {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f0f4f8;
+  border-radius: 8px;
+}
+
+.headcount-salary-table .table-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .headcount-salary-table {
+    padding: 16px;
+  }
+  
+  .headcount-salary-table th,
+  .headcount-salary-table td {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .headcount-salary-table .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .headcount-salary-table .year-summary {
+    padding: 12px;
+  }
+  
+  .headcount-salary-table .summary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .headcount-salary-table .summary-value {
+    margin-top: 4px;
+  }
+}

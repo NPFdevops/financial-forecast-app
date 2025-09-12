@@ -1,0 +1,177 @@
+.pdf-export {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.export-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--gray-200);
+  padding-bottom: 1rem;
+}
+
+.export-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.export-header p {
+  color: var(--gray-600);
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.export-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.scenario-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scenario-selection label {
+  font-weight: 600;
+  color: var(--gray-700);
+  font-size: 0.875rem;
+}
+
+.scenario-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  background: white;
+  font-size: 0.875rem;
+  color: var(--gray-900);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scenario-select:hover {
+  border-color: var(--primary-300);
+}
+
+.scenario-select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+
+.export-btn {
+  background: var(--primary-500);
+  color: white;
+  border: 1px solid var(--primary-500);
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.export-btn:hover:not(:disabled) {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.export-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.export-info {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 1rem;
+  border-left: 3px solid var(--primary-400);
+}
+
+.export-info h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.export-info ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.export-info li {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.export-info li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+  .export-controls {
+    flex-direction: row;
+    align-items: end;
+    gap: 1.5rem;
+  }
+  
+  .scenario-selection {
+    flex: 1;
+  }
+  
+  .export-btn {
+    flex-shrink: 0;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf-export {
+    padding: 1rem;
+  }
+  
+  .export-header h3 {
+    font-size: 1.125rem;
+  }
+  
+  .export-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}
