@@ -560,7 +560,7 @@ export const calculateFinancials = async (scenarioName = 'Base') => {
   try {
     // Get scenario ID from name
     const scenarios = await scenarioService.getAll();
-    const scenario = scenarios.find(s => s.name === scenarioName);
+    const scenario = scenarios.find(s => s.name.toLowerCase() === scenarioName.toLowerCase());
     
     if (!scenario) {
       throw new Error(`Scenario "${scenarioName}" not found`);
@@ -582,9 +582,15 @@ export const calculateFinancials = async (scenarioName = 'Base') => {
         (multipliers.b2c_arpu_multiplier || 1);
       
       // B2C Revenue calculation
-      const walletConnectionRate = baseAssumptions.wallet_connection_rate?.[year] || 0;
-      const activePaidUsers = adjustedTraffic * walletConnectionRate * adjustedConversionRate;
-      const b2cRevenue = activePaidUsers * adjustedArpu * 12; // Annual
+      const globalNftMarketVolume = baseAssumptions.global_nft_market_volume?.[year] || 0;
+      const avgFee = baseAssumptions.avg_fee?.[year] || 0;
+      const marketShare = adjustedConversionRate; // Renaming for clarity
+
+      const b2cRevenue = globalNftMarketVolume * marketShare * avgFee;
+
+      // Recalculate active paid users based on new B2C revenue and ARPU for reporting
+      const annualArpu = adjustedArpu * 12;
+      const activePaidUsers = annualArpu > 0 ? b2cRevenue / annualArpu : 0;
       
       // B2B Revenue calculation
       let b2bRevenue = 0;

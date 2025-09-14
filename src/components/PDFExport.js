@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import './PDFExport.css';
 
 const PDFExport = ({ financialData, currentAssumptions, currentMultipliers, selectedScenario }) => {
@@ -66,7 +65,8 @@ const PDFExport = ({ financialData, currentAssumptions, currentMultipliers, sele
 
       // Calculate financial data for selected scenario (simplified calculation)
       const reportData = financialData; // Using existing data for now
-      const cashFlowData = calculateCashAndRunway(reportData);
+      // Calculate cash flow data for the report but don't store it in a variable since it's not used
+      calculateCashAndRunway(reportData);
 
       // Helper function to add new page if needed
       const checkPageBreak = (requiredHeight) => {

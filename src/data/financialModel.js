@@ -128,7 +128,9 @@ export const calculateFinancials = (scenario = 'base') => {
     Object.keys(baseAssumptions.b2bClients).forEach(tier => {
       const clients = baseAssumptions.b2bClients[tier][year] * multipliers.b2bClientsMultiplier;
       const pricing = baseAssumptions.b2bPricing[tier][year] * multipliers.b2bPriceMultiplier;
-      b2bRevenue += clients * pricing * 12; // Annual
+      // Apply average fee as a percentage to the transaction value
+      const transactionValue = clients * pricing * 12; // Annual
+      b2bRevenue += transactionValue * baseAssumptions.avgFee[year];
     });
     
     const totalRevenue = b2cRevenue + b2bRevenue;

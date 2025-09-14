@@ -69,6 +69,26 @@ export const useScenarioData = (scenarioName = 'Base') => {
   const [calculations, setCalculations] = useState(null);
   const [calculationsLoading, setCalculationsLoading] = useState(false);
 
+  // Calculate financials when scenario data changes
+  useEffect(() => {
+    if (!data) return;
+    
+    const runCalculations = async () => {
+      try {
+        setCalculationsLoading(true);
+        const calculated = await calculateFinancials(scenarioName);
+        setCalculations(calculated);
+      } catch (err) {
+        console.error('Error calculating financials:', err);
+        setError(err.message || 'Failed to calculate financials');
+      } finally {
+        setCalculationsLoading(false);
+      }
+    };
+    
+    runCalculations();
+  }, [data, scenarioName]);
+
   // Load scenario-specific data
   const loadScenarioData = useCallback(async (scenarioName) => {
     try {
@@ -83,7 +103,7 @@ export const useScenarioData = (scenarioName = 'Base') => {
       setScenarios(scenarioList);
       
       // Find the requested scenario
-      const scenario = scenarioList.find(s => s.name === scenarioName);
+      const scenario = scenarioList.find(s => s.name.toLowerCase() === scenarioName.toLowerCase());
       if (!scenario) {
         throw new Error(`Scenario "${scenarioName}" not found`);
       }

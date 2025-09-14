@@ -4,24 +4,21 @@ export const calculationDefinitions = {
   totalRevenue: {
     title: 'Total Revenue',
     formula: 'B2C Revenue + B2B/API Revenue',
-    description: 'Combined revenue from both consumer subscriptions and business API clients.',
+    description: 'Combined revenue from both consumer transactions and business API clients.',
     variables: [
-      { name: 'B2C Revenue', description: 'Revenue from individual consumer subscriptions' },
+      { name: 'B2C Revenue', description: 'Revenue from individual consumer transactions' },
       { name: 'B2B/API Revenue', description: 'Revenue from business clients across all tiers' }
     ]
   },
 
   b2cRevenue: {
     title: 'B2C Revenue',
-    formula: 'Active Paid Users × B2C ARPU × 12 months\n\nWhere:\nActive Paid Users = Traffic × Wallet Connection Rate × Paid Conversion Rate × Traffic Multiplier × Paid Conversion Multiplier',
-    description: 'Annual revenue from consumer subscriptions based on user acquisition and pricing.',
+    formula: 'Total Market Volume × Market Share Captured × Avg. Fee Charged',
+    description: 'Annual revenue from consumer transactions based on market size and share.',
     variables: [
-      { name: 'Traffic', description: 'Monthly website/app sessions' },
-      { name: 'Wallet Connection Rate', description: 'Percentage of visitors who connect wallets' },
-      { name: 'Paid Conversion Rate', description: 'Percentage of connected users who subscribe' },
-      { name: 'B2C ARPU', description: 'Average Revenue Per User (monthly subscription)' },
-      { name: 'Traffic Multiplier', description: 'Scenario-based adjustment to traffic' },
-      { name: 'Paid Conversion Multiplier', description: 'Scenario-based conversion adjustment' }
+      { name: 'Total Market Volume', description: 'The total value of transactions in the market' },
+      { name: 'Market Share Captured', description: 'The percentage of the market volume captured by the platform' },
+      { name: 'Avg. Fee Charged', description: 'The average fee charged per transaction' }
     ]
   },
 
@@ -42,14 +39,12 @@ export const calculationDefinitions = {
 
   activePaidUsers: {
     title: 'Active Paid Users (B2C)',
-    formula: 'Traffic Sessions × Wallet Connection Rate × Paid Conversion Rate × Scenario Multipliers',
-    description: 'Number of paying consumer subscribers based on traffic conversion funnel.',
+    formula: 'Traffic Sessions × Wallet Connection Rate × Paid Conversion Rate',
+    description: 'Number of paying consumer subscribers.',
     variables: [
-      { name: 'Traffic Sessions', description: 'Monthly website/app visitors' },
-      { name: 'Wallet Connection Rate', description: 'Users who connect crypto wallets (%)' },
-      { name: 'Paid Conversion Rate', description: 'Connected users who subscribe (%)' },
-      { name: 'Traffic Multiplier', description: 'Scenario adjustment for traffic volume' },
-      { name: 'Conversion Multiplier', description: 'Scenario adjustment for conversion rates' }
+      { name: 'Traffic Sessions', description: 'Number of user sessions on the platform' },
+      { name: 'Wallet Connection Rate', description: 'Percentage of sessions where a user connects their wallet' },
+      { name: 'Paid Conversion Rate', description: 'Percentage of connected users who become paid subscribers' }
     ]
   },
 
@@ -111,33 +106,14 @@ export const calculationDefinitions = {
   },
 
   // Scenario Multipliers
-  trafficMultiplier: {
-    title: 'Traffic Multiplier',
-    formula: 'Base Traffic × Traffic Multiplier = Adjusted Traffic',
-    description: 'Adjusts base traffic assumptions for different scenarios (Base=100%, Upside=120%, Downside=80%).',
-    variables: [
-      { name: 'Base Traffic', description: 'Baseline monthly sessions assumption' },
-      { name: 'Multiplier', description: 'Scenario-specific adjustment factor' }
-    ]
-  },
 
-  paidConversionMultiplier: {
-    title: 'Paid Conversion Multiplier',
-    formula: 'Base Conversion Rate × Conversion Multiplier = Adjusted Rate',
-    description: 'Adjusts conversion rates for different market conditions and scenarios.',
+  b2cAvgFeeMultiplier: {
+    title: 'B2C Avg. Fee Multiplier',
+    formula: 'Base Avg. Fee × Multiplier = Adjusted Avg. Fee',
+    description: 'Adjusts the average B2C transaction fee for different scenarios.',
     variables: [
-      { name: 'Base Conversion Rate', description: 'Baseline paid subscription conversion' },
-      { name: 'Multiplier', description: 'Scenario-based conversion adjustment' }
-    ]
-  },
-
-  b2cArpuMultiplier: {
-    title: 'B2C ARPU Multiplier',
-    formula: 'Base ARPU × ARPU Multiplier = Adjusted ARPU',
-    description: 'Adjusts average revenue per user for pricing power in different scenarios.',
-    variables: [
-      { name: 'Base ARPU', description: 'Baseline monthly subscription price' },
-      { name: 'Multiplier', description: 'Scenario-based pricing adjustment' }
+      { name: 'Base Avg. Fee', description: 'Baseline average transaction fee' },
+      { name: 'Multiplier', description: 'Scenario-based adjustment' }
     ]
   },
 

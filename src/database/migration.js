@@ -133,7 +133,7 @@ const getUnitForAssumption = (key) => {
     'trafficSessions': 'sessions',
     'walletConnectionRate': 'rate',
     'paidConversionRate': 'rate',
-    'avgFee': 'USD',
+    'avgFee': 'rate',
     'b2cArpu': 'USD',
     'churnMonthly': 'rate'
   };

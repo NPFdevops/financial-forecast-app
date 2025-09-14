@@ -5,6 +5,10 @@ import InfoTooltip from './InfoTooltip';
 import { calculationDefinitions } from '../data/calculationDefinitions';
 
 const ExecutiveSummary = ({ selectedScenario, financialData }) => {
+  // Handle loading or missing data
+  if (!financialData) {
+    return <div className="loading">Loading financial data...</div>;
+  }
   const formatCurrency = (value) => {
     if (value >= 1000000) {
       return `$${(value / 1000000).toFixed(1)}M`;
@@ -19,16 +23,20 @@ const ExecutiveSummary = ({ selectedScenario, financialData }) => {
     const cashData = {};
     
     years.forEach(year => {
-      const ebitda = financialData[year].ebitda;
-      const monthlyBurn = Math.abs(ebitda) / 12;
+      // Safely access financial data with null checks
+      const yearData = financialData[year];
+      if (!yearData) return;
+      
+      const ebitda = yearData.ebitda || 0;
+      const monthlyBurn = Math.abs(ebitda) / 12 || 1; // Avoid division by zero
       
       cashData[year] = {
         yearEndCash: year === 2026 ? 
-          baseAssumptions.cashFlow.startingCash + baseAssumptions.cashFlow.plannedRaises[year] + ebitda :
-          (cashData[year - 1]?.yearEndCash || 0) + baseAssumptions.cashFlow.plannedRaises[year] + ebitda,
+          (baseAssumptions?.cashFlow?.startingCash || 0) + (baseAssumptions?.cashFlow?.plannedRaises?.[year] || 0) + ebitda :
+          (cashData[year - 1]?.yearEndCash || 0) + (baseAssumptions?.cashFlow?.plannedRaises?.[year] || 0) + ebitda,
         runwayMonths: ebitda >= 0 ? '∞' : Math.max(0, Math.floor(
-          ((year === 2026 ? baseAssumptions.cashFlow.startingCash : cashData[year - 1]?.yearEndCash || 0) + 
-           baseAssumptions.cashFlow.plannedRaises[year]) / monthlyBurn
+          ((year === 2026 ? (baseAssumptions?.cashFlow?.startingCash || 0) : cashData[year - 1]?.yearEndCash || 0) + 
+           (baseAssumptions?.cashFlow?.plannedRaises?.[year] || 0)) / monthlyBurn
         ))
       };
     });
@@ -37,15 +45,15 @@ const ExecutiveSummary = ({ selectedScenario, financialData }) => {
   };
 
   const cashFlowData = calculateCashAndRunway();
-  const scenarioName = selectedScenario.charAt(0).toUpperCase() + selectedScenario.slice(1);
+  const scenarioName = selectedScenario?.charAt(0)?.toUpperCase() + selectedScenario?.slice(1) || 'Scenario';
   const scenarioNumber = selectedScenario === 'base' ? '1' : selectedScenario === 'upside' ? '2' : '3';
 
   // Calculate year-over-year growth
   const calculateGrowth = (currentYear, previousYear, metric) => {
-    if (!financialData[previousYear]) return null;
-    const current = financialData[currentYear][metric];
-    const previous = financialData[previousYear][metric];
-    if (previous === 0) return null;
+    if (!financialData?.[previousYear] || !financialData?.[currentYear]) return null;
+    const current = financialData[currentYear]?.[metric];
+    const previous = financialData[previousYear]?.[metric];
+    if (previous === 0 || previous === undefined || current === undefined) return null;
     return ((current - previous) / Math.abs(previous)) * 100;
   };
 

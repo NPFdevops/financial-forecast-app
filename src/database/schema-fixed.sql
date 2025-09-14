@@ -110,10 +110,10 @@ INSERT INTO base_assumptions (assumption_type, year, value, unit, description) V
 ('paid_conversion_rate', 2027, 0.0800, 'rate', 'Rate of users converting to paid'),
 ('paid_conversion_rate', 2028, 0.1200, 'rate', 'Rate of users converting to paid'),
 
--- Average Fee
-('avg_fee', 2026, 0.5000, 'USD', 'Average fee per transaction'),
-('avg_fee', 2027, 0.5000, 'USD', 'Average fee per transaction'),
-('avg_fee', 2028, 0.5000, 'USD', 'Average fee per transaction'),
+-- Average Fee (as percentage of transaction)
+('avg_fee', 2026, 0.50, 'rate', 'Average fee as percentage of transaction'),
+('avg_fee', 2027, 0.50, 'rate', 'Average fee as percentage of transaction'),
+('avg_fee', 2028, 0.50, 'rate', 'Average fee as percentage of transaction'),
 
 -- B2C ARPU
 ('b2c_arpu', 2026, 600, 'USD', 'B2C Annual Revenue Per User'),
