@@ -394,7 +394,7 @@ function App() {
         </div>
       </div>
 
-      <AdminPanel 
+      <AdminPanel
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
         baseAssumptions={currentAssumptions}
