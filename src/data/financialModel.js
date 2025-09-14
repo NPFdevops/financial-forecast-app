@@ -6,14 +6,14 @@ export const scenarios = {
 };
 
 export const scenarioMultipliers = {
-  trafficMultiplier: { base: 1.00, upside: 1.20, downside: 0.80 },
-  regConversionMultiplier: { base: 1.00, upside: 1.03, downside: 0.95 },
-  paidConversionMultiplier: { base: 1.00, upside: 1.10, downside: 0.85 },
+  trafficMultiplier: { base: 1.00, upside: 1.50, downside: 0.80 },
+  regConversionMultiplier: { base: 1.00, upside: 1.40, downside: 0.95 },
+  paidConversionMultiplier: { base: 1.00, upside: 1.30, downside: 0.85 },
   b2cArpuMultiplier: { base: 1.00, upside: 1.10, downside: 0.95 },
   b2bClientsMultiplier: { base: 1.00, upside: 1.25, downside: 0.75 },
-  b2bPriceMultiplier: { base: 1.00, upside: 1.05, downside: 0.95 },
+  b2bPriceMultiplier: { base: 1.00, upside: 1.00, downside: 1.00 },
   marketingSpendMultiplier: { base: 1.00, upside: 1.10, downside: 1.10 },
-  hostingCostMultiplier: { base: 1.00, upside: 0.95, downside: 1.10 },
+  hostingCostMultiplier: { base: 1.00, upside: 0.80, downside: 1.00 },
   gaMultiplier: { base: 1.00, upside: 1.00, downside: 1.10 }
 };
 
