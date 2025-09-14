@@ -268,14 +268,14 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
             <div className="assumptions-editor">
               <h3>Market & Traffic Assumptions</h3>
               <div className="assumption-group">
-                <label>Traffic Sessions (monthly):</label>
+                <label>Global NFT market volume ($/year):</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
                     <input
                       type="number"
-                      value={scenarioData.baseAssumptions.traffic_sessions?.[year] || 0}
-                      onChange={(e) => handleAssumptionChange('traffic_sessions', year, e.target.value)}
+                      value={scenarioData.baseAssumptions.global_nft_market_volume?.[year] || 0}
+                      onChange={(e) => handleAssumptionChange('global_nft_market_volume', year, e.target.value)}
                       disabled={isUpdating}
                     />
                   </div>
@@ -283,7 +283,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
               </div>
 
               <div className="assumption-group">
-                <label>Wallet Connection Rate (%):</label>
+                <label>Market Share Acquired:</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -301,7 +301,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
               </div>
 
               <div className="assumption-group">
-                <label>Paid Conversion Rate (%):</label>
+                <label>Average Fee:</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -310,8 +310,8 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                       step="0.01"
                       min="0"
                       max="1"
-                      value={scenarioData.baseAssumptions.paid_conversion_rate?.[year] || 0}
-                      onChange={(e) => handleAssumptionChange('paid_conversion_rate', year, e.target.value)}
+                      value={scenarioData.baseAssumptions.avg_fee?.[year] || 0}
+                      onChange={(e) => handleAssumptionChange('avg_fee', year, e.target.value)}
                       disabled={isUpdating}
                     />
                   </div>
@@ -319,7 +319,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
               </div>
 
               <div className="assumption-group">
-                <label>B2C ARPU ($/year):</label>
+                <label>B2C ARPU ($/month):</label>
                 {[2026, 2027, 2028].map(year => (
                   <div key={year} className="year-input">
                     <span>{year}:</span>
@@ -409,7 +409,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                         </div>
                       </div>
                       <div className="tier-section">
-                        <label>Annual Price ($):</label>
+                        <label>Monthly Price ($):</label>
                         <div className="year-inputs-row">
                           {[2026, 2027, 2028].map(year => (
                             <div key={year} className="year-input-inline">
@@ -500,8 +500,8 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                   </thead>
                   <tbody>
                     {Object.entries({
-                      traffic_multiplier: 'Traffic Multiplier',
-                      paid_conversion_multiplier: 'Paid Conversion Multiplier',
+                      traffic_multiplier: 'Global NFT Market Volume Multiplier',
+                      paid_conversion_multiplier: 'Average Fee Multiplier',
                       b2c_arpu_multiplier: 'B2C ARPU Multiplier',
                       b2b_clients_multiplier: 'B2B Clients Multiplier',
                       b2b_price_multiplier: 'B2B Price Multiplier',
