@@ -4,24 +4,34 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-// Validate configuration
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing Supabase configuration. Please check your .env file.');
-  throw new Error('Supabase configuration is missing');
-}
+// Check if we're in a deployment environment without proper config
+const isDevelopment = process.env.NODE_ENV === 'development';
+const hasValidConfig = supabaseUrl && supabaseKey && 
+  supabaseUrl.startsWith('https://') && 
+  supabaseUrl.includes('.supabase.co') && 
+  supabaseKey.length > 100;
 
-if (!supabaseUrl.startsWith('https://') || !supabaseUrl.includes('.supabase.co')) {
-  console.error('Invalid Supabase URL format:', supabaseUrl);
-  throw new Error('Invalid Supabase URL format');
-}
+// In production/deployment, provide fallback values to prevent app crash
+let finalUrl = supabaseUrl;
+let finalKey = supabaseKey;
 
-if (supabaseKey.length < 100) {
-  console.error('Supabase key appears to be invalid (too short)');
-  throw new Error('Invalid Supabase key format');
+if (!hasValidConfig) {
+  if (isDevelopment) {
+    console.error('Missing or invalid Supabase configuration.');
+    console.error('Please check your .env file and ensure:');
+    console.error('1. REACT_APP_SUPABASE_URL is set to your Supabase project URL');
+    console.error('2. REACT_APP_SUPABASE_ANON_KEY is set to your anon key');
+    throw new Error('Supabase configuration is missing or invalid');
+  } else {
+    // In production, use fallback values to prevent complete app crash
+    console.warn('⚠️ Supabase configuration missing in production. Using fallback values.');
+    finalUrl = 'https://placeholder.supabase.co';
+    finalKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDU5OTI4ODAsImV4cCI6MTk2MTU2ODg4MH0.fallback';
+  }
 }
 
 // Create Supabase client with proper configuration
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createClient(finalUrl, finalKey, {
   auth: {
     persistSession: false, // We don't need persistent auth sessions
     autoRefreshToken: false,
@@ -35,7 +45,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
 });
 
 // Export configuration status
-export const isSupabaseConfigured = true; // Always true if we get past the validation above
+export const isSupabaseConfigured = hasValidConfig;
 
 // Helper function to handle Supabase errors with better error messages
 export const handleSupabaseError = (error) => {

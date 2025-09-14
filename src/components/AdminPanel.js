@@ -14,7 +14,7 @@ import {
   ErrorMessage,
   DataWrapper
 } from './LoadingComponents';
-// import { isSupabaseConfigured } from '../services/supabase'; // Disabled - user has configured Supabase
+import { isSupabaseConfigured } from '../services/supabase';
 
 const AdminPanel = ({ 
   isOpen, 
@@ -137,8 +137,8 @@ const AdminPanel = ({
 
   if (!isOpen) return null;
 
-  // Show setup instructions if Supabase is not configured - DISABLED since user has configured Supabase
-  if (false) { // !isSupabaseConfigured
+  // Show setup instructions if Supabase is not configured
+  if (!isSupabaseConfigured) {
     return (
       <div className="admin-overlay">
         <div className="admin-panel">
@@ -151,11 +151,11 @@ const AdminPanel = ({
           <div className="admin-content">
             <div className="supabase-setup-message">
               <div className="setup-icon">🚀</div>
-              <h3>Database Connection Required</h3>
-              <p>To use the AdminPanel, you need to set up Supabase first.</p>
+              <h3>Database Configuration Required</h3>
+              <p>The AdminPanel requires Supabase configuration to function properly.</p>
               
               <div className="setup-steps">
-                <h4>Quick Setup (5 minutes):</h4>
+                <h4>For Local Development:</h4>
                 <ol>
                   <li>
                     <strong>Create Supabase Project:</strong>
@@ -168,7 +168,7 @@ const AdminPanel = ({
                   </li>
                   <li>
                     <strong>Update .env File:</strong>
-                    <br />Replace the placeholder values in your <code>.env</code> file:
+                    <br />Copy <code>.env.template</code> to <code>.env</code> and fill in your credentials:
                     <pre>
 {`REACT_APP_SUPABASE_URL=https://your-project.supabase.co
 REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
@@ -176,11 +176,20 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                   </li>
                   <li>
                     <strong>Install Database Schema:</strong>
-                    <br />In Supabase SQL Editor, run the contents of <code>src/database/schema.sql</code>
+                    <br />In Supabase SQL Editor, run the contents of <code>src/database/schema-fixed.sql</code>
+                  </li>
+                </ol>
+                
+                <h4>For Vercel Deployment:</h4>
+                <ol>
+                  <li>
+                    <strong>Add Environment Variables:</strong>
+                    <br />In Vercel Dashboard → Project Settings → Environment Variables
+                    <br />Add <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code>
                   </li>
                   <li>
-                    <strong>Restart Development Server:</strong>
-                    <br />Stop and restart <code>npm start</code>
+                    <strong>Redeploy:</strong>
+                    <br />Trigger a new deployment after adding the environment variables
                   </li>
                 </ol>
               </div>
