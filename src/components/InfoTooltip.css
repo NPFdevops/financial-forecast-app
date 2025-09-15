@@ -4,12 +4,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   margin-left: 0.5rem;
   border: none;
   background: transparent;
-  color: var(--gray-400);
+  color: #ec4899; /* pink-500 */
   cursor: pointer;
   border-radius: 50%;
   transition: all 0.15s ease;
@@ -18,20 +18,20 @@
 }
 
 .info-tooltip-trigger:hover {
-  color: var(--primary-500);
-  background: var(--primary-50);
+  color: #db2777; /* pink-600 */
+  background: #fce7f3; /* pink-100 */
   transform: scale(1.1);
 }
 
 .info-tooltip-trigger:focus {
-  outline: 2px solid var(--primary-500);
+  outline: 2px solid #ec4899; /* pink-500 */
   outline-offset: 2px;
-  color: var(--primary-500);
+  color: #ec4899;
 }
 
 .info-tooltip-trigger svg {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Portal container for proper positioning */

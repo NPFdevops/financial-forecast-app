@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import './App.css';
 import { useScenarioData } from './hooks/useFinancialModel';
 import { scenarioMultipliers, baseAssumptions } from './data/financialModel';
@@ -11,12 +11,21 @@ import CashFlowTable from './components/CashFlowTable';
 import FinancialCharts from './components/FinancialCharts';
 import AdminPanel from './components/AdminPanel';
 import PDFExport from './components/PDFExport';
+import EmailPopup from './components/EmailPopup';
 
 function App() {
   const [selectedScenario, setSelectedScenario] = useState('Base');
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('executive-summary');
+  const [showEmailPopup, setShowEmailPopup] = useState(false);
   
+  useEffect(() => {
+    const hasProvidedEmail = localStorage.getItem('hasProvidedEmail');
+    if (!hasProvidedEmail) {
+      setShowEmailPopup(true);
+    }
+  }, []);
+
   // Use the useScenarioData hook to fetch and calculate financial data
   const { calculations, loading, error, refresh } = useScenarioData(selectedScenario);
   
@@ -81,6 +90,7 @@ function App() {
 
   return (
     <div className="App">
+      {showEmailPopup && <EmailPopup onClose={() => setShowEmailPopup(false)} />}
       {/* Mobile Restriction */}
       <div className="mobile-restriction">
         <div className="mobile-message">

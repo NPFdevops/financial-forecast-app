@@ -292,7 +292,14 @@ INSERT INTO salaries (role_id, year, monthly_salary) VALUES
 ((SELECT id FROM employee_roles WHERE role_name = 'ops_finance'), 2027, 5500),
 ((SELECT id FROM employee_roles WHERE role_name = 'ops_finance'), 2028, 6000);
 
--- 9. Cash flow table
+-- 9. Viewers table
+CREATE TABLE viewers (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 10. Cash flow table
 CREATE TABLE cash_flow (
     id SERIAL PRIMARY KEY,
     metric_type VARCHAR(100) NOT NULL,
@@ -336,6 +343,7 @@ ALTER TABLE employee_roles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE headcount ENABLE ROW LEVEL SECURITY;
 ALTER TABLE salaries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cash_flow ENABLE ROW LEVEL SECURITY;
+ALTER TABLE viewers ENABLE ROW LEVEL SECURITY;
 
 -- For development, create a policy that allows all operations
 -- In production, you'd want more restrictive policies based on authentication
@@ -350,3 +358,4 @@ CREATE POLICY "Allow all operations for now" ON employee_roles FOR ALL USING (tr
 CREATE POLICY "Allow all operations for now" ON headcount FOR ALL USING (true);
 CREATE POLICY "Allow all operations for now" ON salaries FOR ALL USING (true);
 CREATE POLICY "Allow all operations for now" ON cash_flow FOR ALL USING (true);
+CREATE POLICY "Allow all operations for now" ON viewers FOR ALL USING (true);
