@@ -24,6 +24,9 @@ const AdminPanel = ({
   const [selectedScenario, setSelectedScenario] = useState('Base');
   const [lastSaved, setLastSaved] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [pinInput, setPinInput] = useState('');
+  const [pinError, setPinError] = useState('');
 
   // Add local state to manage form data
   const [localScenarioData, setLocalScenarioData] = useState(null);
@@ -37,6 +40,30 @@ const AdminPanel = ({
       setLocalScenarioData(JSON.parse(JSON.stringify(scenarioData)));
     }
   }, [scenarioData]);
+
+  // Initialize PIN authorization from localStorage
+  React.useEffect(() => {
+    const stored = localStorage.getItem('adminPinAuthorized');
+    setIsAuthorized(stored === 'true');
+  }, []);
+
+  const handleUnlock = (e) => {
+    e && e.preventDefault();
+    if (pinInput.trim() === '20252025') {
+      setIsAuthorized(true);
+      localStorage.setItem('adminPinAuthorized', 'true');
+      setPinError('');
+    } else {
+      setPinError('Invalid PIN');
+    }
+  };
+
+  const handleLock = () => {
+    setIsAuthorized(false);
+    localStorage.removeItem('adminPinAuthorized');
+    setPinInput('');
+    setPinError('');
+  };
   
   // Editing hooks for different data types
   const assumptionsEditor = useEditableAssumptions();
@@ -110,6 +137,10 @@ const AdminPanel = ({
   };
   
   const handleSave = async () => {
+    if (!isAuthorized) {
+      alert('Enter the PIN to unlock editing before saving.');
+      return;
+    }
     setIsSaving(true);
     try {
       // This is a simplified example. In a real app, you'd want to be more sophisticated
@@ -257,6 +288,9 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
             <h2>Financial Model Admin Panel</h2>
             <div className="data-status">
               <span className="status-indicator database">🗄️ Supabase Database</span>
+              <span className="status-indicator" title={isAuthorized ? 'Editing unlocked' : 'Editing locked'}>
+                {isAuthorized ? '🔓 Unlocked' : '🔒 Locked'}
+              </span>
               <SavingIndicator 
                 isSaving={isUpdating}
                 lastSaved={lastSaved}
@@ -268,9 +302,14 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
             <button className="refresh-btn" onClick={handleRefresh} disabled={loading}>
               {loading ? <LoadingSpinner size="small" /> : '🔄'}
             </button>
+            {isAuthorized ? (
+              <button className="close-btn" onClick={handleLock} title="Lock editing">🔒</button>
+            ) : null}
             <button className="close-btn" onClick={onClose}>×</button>
           </div>
         </div>
+
+        {/* PIN prompt moved to bottom actions */}
 
         <DataWrapper 
           loading={loading}
@@ -311,7 +350,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             type="number"
                             value={localScenarioData.baseAssumptions.global_nft_market_volume?.[year] || 0}
                             onChange={(e) => handleAssumptionChange('global_nft_market_volume', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -329,7 +368,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             max="1"
                             value={localScenarioData.baseAssumptions.wallet_connection_rate?.[year] || 0}
                             onChange={(e) => handleAssumptionChange('wallet_connection_rate', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -347,7 +386,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             max="1"
                             value={localScenarioData.baseAssumptions.avg_fee?.[year] || 0}
                             onChange={(e) => handleAssumptionChange('avg_fee', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -362,7 +401,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             type="number"
                             value={localScenarioData.baseAssumptions.b2c_arpu?.[year] || 0}
                             onChange={(e) => handleAssumptionChange('b2c_arpu', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -378,7 +417,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             type="number"
                             value={localScenarioData.costs.marketing_spend?.[year] || 0}
                             onChange={(e) => handleCostChange('marketing_spend', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -393,7 +432,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             type="number"
                             value={localScenarioData.costs.hosting_cost_per_user?.[year] || 0}
                             onChange={(e) => handleCostChange('hosting_cost_per_user', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -408,7 +447,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                             type="number"
                             value={localScenarioData.costs.ga_fixed?.[year] || 0}
                             onChange={(e) => handleCostChange('ga_fixed', year, e.target.value)}
-                            disabled={isUpdating}
+                            disabled={isUpdating || !isAuthorized}
                           />
                         </div>
                       ))}
@@ -437,7 +476,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                                       type="number"
                                       value={localScenarioData.b2bClients[tier]?.[year] || 0}
                                       onChange={(e) => handleB2BClientChange(tier, year, e.target.value)}
-                                      disabled={isUpdating}
+                                      disabled={isUpdating || !isAuthorized}
                                     />
                                   </div>
                                 ))}
@@ -453,7 +492,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                                       type="number"
                                       value={localScenarioData.b2bPricing?.[tier]?.[year] || 0}
                                       onChange={(e) => handleB2BPricingChange(tier, year, e.target.value)}
-                                      disabled={isUpdating}
+                                      disabled={isUpdating || !isAuthorized}
                                     />
                                   </div>
                                 ))}
@@ -488,7 +527,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                                       type="number"
                                       value={localScenarioData.headcount[role]?.[year] || 0}
                                       onChange={(e) => handleHeadcountChange(role, year, e.target.value)}
-                                      disabled={isUpdating}
+                                      disabled={isUpdating || !isAuthorized}
                                     />
                                   </div>
                                 ))}
@@ -504,7 +543,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                                       type="number"
                                       value={localScenarioData.salaries?.[role]?.[year] || 0}
                                       onChange={(e) => handleSalaryChange(role, year, e.target.value)}
-                                      disabled={isUpdating}
+                                      disabled={isUpdating || !isAuthorized}
                                     />
                                   </div>
                                 ))}
@@ -552,7 +591,7 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
                                   step="0.01"
                                   value={localScenarioData.multipliers[key] || 1.0}
                                   onChange={(e) => handleMultiplierChange(key, 'base', e.target.value)}
-                                  disabled={isUpdating}
+                                  disabled={isUpdating || !isAuthorized}
                                   readOnly={selectedScenario !== 'Base'}
                                   title={selectedScenario !== 'Base' ? 'Switch to Base scenario to edit' : ''}
                                 />
@@ -610,9 +649,25 @@ REACT_APP_SUPABASE_ANON_KEY=your-anon-key-here`}
               {loading ? <LoadingSpinner size="small" /> : '🔄 Refresh'}
             </button>
           </div>
+          {!isAuthorized && (
+            <div className="pin-unlock" style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+              <form onSubmit={handleUnlock} style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  placeholder="Enter PIN"
+                  value={pinInput}
+                  onChange={(e) => setPinInput(e.target.value)}
+                  style={{ padding: '6px 10px' }}
+                />
+                <button type="submit" className="save-btn">Unlock</button>
+              </form>
+              {pinError && <span className="error-message" style={{ marginLeft: 8 }}>{pinError}</span>}
+            </div>
+          )}
           <div className="action-group">
             <button className="cancel-btn" onClick={onClose}>Close</button>
-            <button className="save-btn" onClick={handleSave} disabled={isSaving || isUpdating}>
+            <button className="save-btn" onClick={handleSave} disabled={isSaving || isUpdating || !isAuthorized}>
               {isSaving ? <LoadingSpinner size="small" /> : '💾 Save Changes'}
             </button>
           </div>
